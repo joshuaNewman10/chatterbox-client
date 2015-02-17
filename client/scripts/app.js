@@ -8,6 +8,8 @@ var getUserName = function() {
 };
 
 
+/* Add friend function:
+
 var addFriend = function() {
   var friend = $(this).val();
   var friendList = user.friends;
@@ -15,6 +17,7 @@ var addFriend = function() {
     friendList.push(friend);
   }
 };
+*/
 
 var getMessages = function(){$.ajax({
     // always use this url
@@ -36,39 +39,48 @@ var getMessages = function(){$.ajax({
 };
 
 var updateRooms = function(newRooms){
-  newUniqRooms = _.filter(_.uniq(_.difference(rooms.concat(newRooms), rooms)), _.identity); 
-  var appendRooms = '';
-  $(appendRooms);
+  newUniqRooms = _.filter(_.uniq(_.difference(rooms.concat(newRooms), rooms)), _.identity);
+  var $roomList = [];
   for(var x = 0; x < newUniqRooms.length; x++){
-    appendRooms += "<option value=" + newUniqRooms[x] + ">" + newUniqRooms[x] + "</option>";
-
+    var newRoom = $("<option></option>").text(newUniqRooms[x]);
+    newRoom.value = newUniqRooms[x];
+    $roomList.push(newRoom);
     rooms.push(newUniqRooms[x]);
   }
-  $(".rooms").append($(appendRooms));
+  $(".rooms").append($roomList);
+};
+
+var submitRoom = function() {
+  var newRoomName = $('.newRoom').val(); //get roomName
+  $(".newRoom").val('');
+  rooms.push(newRoomName); //add to global list of rooms
+
+  $('.rooms').append('<option selected=true>' + newRoomName + '</option>');
+  getMessages();
 };
 
 var updateMessages = function(messageList){
   var currentRoom = $(".rooms").val();
 
   $(".messages").html('');
-  var $messageDiv = '';
-  $(messageDiv);
+  var messages = [];
 
   for(var i = 0; i < messageList.length; i++){
     var currentMessage = messageList[i];
+    var $messageDiv = $('<div></div>');
 
     if(!currentMessage.roomname){
       currentMessage.roomname = "lobby";
     }
 
     if(currentMessage.roomname === currentRoom){
-      var userName = escapeHtml(currentMessage.username);
-      var mssg = escapeHtml(currentMessage.text);
-      $messageDiv += '<div><b>' + '<p class=chatName>' + userName + "</p></b>" + ":" + "<p class=chatMessage>" + mssg + '</p></div>';
+      var userName = $('<p class=chatName></p>').text(currentMessage.username + ": ");
+      var mssg = $('<p class=chatMessage></p>').text(currentMessage.text);
+      $messageDiv.append(userName, mssg);
+      messages.push($messageDiv);
     }
   }
-  // $(messageDiv).text().html();
-  $(".messages").append(messageDiv);
+  $(".messages").append(messages);
 };
 
 var validateInput = function(message){
@@ -80,12 +92,12 @@ var validateInput = function(message){
   return message;
 };
 
-var postMessage = function(userName, message) {
+var postMessage = function(userName, message, roomname) {
   $.ajax({
     // always use this url
     url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
-    data: JSON.stringify({username: userName, text: message}),
+    data: JSON.stringify({username: userName, text: message, roomname: roomname}),
     contentType: 'application/json',
     success: function (data) {
       console.log(data);
@@ -100,21 +112,31 @@ var postMessage = function(userName, message) {
 var sendMessage = function() {
   var message = $('.userMessage').val();
   $('.userMessage').val('');
-  postMessage(user.name, message);
+  var currentRoom = $('.rooms').val();
+
+  postMessage(user.name, message, currentRoom);
 };
 
 $(document).ready(function() {
   user.name = getUserName();
-
+  getMessages();
   setInterval(getMessages,1000);
 
   //Event Listeners
   $(".submit").on("click", sendMessage);
+  $('.submitRoom').on('click', submitRoom);
+
+  $(".newRoom").keyup(function(event) {
+    if ( event.keyCode === 13 ) {
+      submitRoom();
+    }
+  });
+
   $(".userMessage").keyup(function(event) {
     if ( event.keyCode === 13 ) {
       sendMessage();
     }
   });
   $(".userName").text(user.name);
-  $(".messages").on('click', '.chatName', addFriend);
+  // $(".messages").on('click', '.chatName', addFriend);
 });

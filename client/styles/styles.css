@@ -9,12 +9,17 @@ p{
 * {
   margin: 0;
 }
+
+
 html, body {
   height: 100%;
   background: #3498db;
 }
 
+.chatName{
+ font-weight: bold;
+}
 
-.input-group{
-
+.chatMessage {
+  padding-left: 20px;
 }
