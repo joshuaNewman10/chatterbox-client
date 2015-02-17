@@ -25,21 +25,31 @@ var updateRooms = function(newRooms){
   var appendRooms = '';
   $(appendRooms);
   for(var x = 0; x < newUniqRooms.length; x++){
-    appendRooms += "<option value=" + newUniqRooms[x] + "'>" + newUniqRooms[x] + "</option>"
+    appendRooms += "<option value=" + newUniqRooms[x] + ">" + newUniqRooms[x] + "</option>"
     rooms.push(newUniqRooms[x]);
   }
   $(".rooms").append($(appendRooms));
 }
 
 var updateMessages = function(messageList){
+  var currentRoom = $(".rooms").val();
+
   $(".messages").html('');
   var messageDiv = '';
   $(messageDiv);
+
   for(var i = 0; i < messageList.length; i++){
     var currentMessage = messageList[i];
-    var userName = validateInput(currentMessage.username);
-    var mssg = validateInput(currentMessage.text);
-    messageDiv += '<div><b>' + userName + "</b>:  " + mssg+ '</div>';
+
+    if(!currentMessage.roomname){
+      currentMessage.roomname = "lobby";
+    }
+
+    if(currentMessage.roomname === currentRoom){
+      var userName = validateInput(currentMessage.username);
+      var mssg = validateInput(currentMessage.text);
+      messageDiv += '<div><b>' + userName + "</b>:  " + mssg+ '</div>';
+    }
   }
   $(".messages").append($(messageDiv));
 }
@@ -87,4 +97,3 @@ $(document).ready(function() {
     }
   });
 });
-
