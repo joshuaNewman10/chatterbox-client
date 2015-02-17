@@ -3,38 +3,65 @@
   <head>
     <meta charset="utf-8">
     <title>chatterbox</title>
-    <link rel="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles/styles.css">
-
-    <!-- dependencies -->
-    <script src="bower_components/jquery/jquery.min.js"></script>
     <script src="bower_components/underscore/underscore-min.js"></script>
+    <script src="bower_components/jquery/jquery.min.js"></script>
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="scripts/bootstrap.min.css">
+    <link rel="stylesheet" href="../client/styles/styles.css">
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="scripts/bootstrap.min.js"></script>
+    <!-- dependencies -->
     <!-- your scripts -->
     <script src="env/config.js"></script>
     <script src="scripts/app.js"></script>
   </head>
   <body>
-    <nav class="navbar navbar-default">
+
+    <nav class="navbar navbar-default"  style="background:white">
       <div class="container-fluid">
         <div class="navbar-header">
-          <a class="navbar-brand" href="index.html">
-          Hey there
+          <a class="navbar-brand" href="#">
+          <span class="glyphicon glyphicon-search"></span>
+            ChatterBox
           </a>
-        </div>
+          </div>
+
+        <a class="userName pull-right navbar-brand"></a>
+
       </div>
     </nav>
 
-    <div id="main">
-      <h1>chatterbox</h1>
-      <!-- Your HTML goes here! -->
-      <input class='userMessage'type= 'text'> <button class ='submit'>Send Message!!!</button>
-      <select class="rooms">
-        <option value="lobby">lobby</option>
-      </select>
-      <hr>
-      <div class="messages">
+    <!-- Collect the nav links, forms, and other content for toggling -->
+    <div class="container" style="background:white; padding:25px; border-radius:15px; ">
+
+     <div class="input-group">
+            <input type="textbox" class="userMessage form-control" placeholder="type message here...">
+            <span class="input-group-btn">
+              <button class="submit btn btn-default" type="button">Send</button>
+            </span>
+          </div><!-- /input-group -->
+          </div>
+
+          <br>
+    <div class="container" style="padding: 20px; background:white; border-radius:20px">
+        <div class="col-md-4">
+        <h3>Channel</h3>
+       <select class="rooms form-control">
+            <option value="lobby">lobby</option>
+          </select>
+
+
+
+        </div>
+
+        <br>
+      <div class="col-md-8" style="padding: 20px; border-radius:20px">
+
+          <div class="messages"></div>
       </div>
+
+
 
 
     </div>

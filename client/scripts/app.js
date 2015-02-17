@@ -1,6 +1,15 @@
 var rooms = ["lobby"];
 var nonConformingChars = ["<script>","</script>","<img>","<div>","</div>","</iframe>","<iframe>"]
 
+var getUserName = function() {
+  var href = document.location.href; //refactor !
+  var name = href.split('=')[1];
+  return name;
+};
+
+var user = {"name": getUserName, "friends": []};
+
+
 var getMessages = function(){$.ajax({
     // always use this url
     url: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt',
@@ -26,6 +35,7 @@ var updateRooms = function(newRooms){
   $(appendRooms);
   for(var x = 0; x < newUniqRooms.length; x++){
     appendRooms += "<option value=" + newUniqRooms[x] + ">" + newUniqRooms[x] + "</option>"
+
     rooms.push(newUniqRooms[x]);
   }
   $(".rooms").append($(appendRooms));
@@ -48,7 +58,7 @@ var updateMessages = function(messageList){
     if(currentMessage.roomname === currentRoom){
       var userName = validateInput(currentMessage.username);
       var mssg = validateInput(currentMessage.text);
-      messageDiv += '<div><b>' + userName + "</b>:  " + mssg+ '</div>';
+      messageDiv += '<div><b>' + '<p class=chatName>' + userName + "</p></b>" + ":" + "<p class=chatMessage>" + mssg + '</p></div>';
     }
   }
   $(".messages").append($(messageDiv));
@@ -81,14 +91,14 @@ var postMessage = function(userName, message) {
 };
 
 var sendMessage = function() {
-  var href= document.location.href; //refactor !
-  var userName = href.slice(href.indexOf('username=') + 'username='.length);
+
   var message = $('.userMessage').val();
   $('.userMessage').val('');
-  postMessage(userName, message);
+  postMessage(user.name, message);
 };
 
 $(document).ready(function() {
+  user.name = getUserName();
   setInterval(getMessages,1000);
   $('.submit').on('click', sendMessage);
   $('.userMessage').keyup(function(event) {
@@ -96,4 +106,5 @@ $(document).ready(function() {
       sendMessage();
     }
   });
+  $(".userName").text(user.name);
 });
