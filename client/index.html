@@ -65,8 +65,9 @@
     <script>
     var chatMessages = new Messages();
     chatMessages.loadMsgs();
-    var chatMessagesView = new MessagesView({model: chatMessages});
+    var chatMessagesView = new MessagesView({collection: chatMessages, el: $('.messages')});
 
     </script>
   </body>
 </html>
+

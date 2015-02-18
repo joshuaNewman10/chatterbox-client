@@ -24,8 +24,15 @@ var Messages = Backbone.Collection.extend({
 //view for messages
 
 var MessagesView = Backbone.View.extend({
-
-});
+  render: function() {
+    var messageCollection = this.collection.models;
+    _.each(messageCollection, function(elem) {
+      new MessageView(elem);
+    }, this);
+    debugger;
+    //this.$el.append
+  }
+},this);
 
 // //Model for message
 
@@ -34,9 +41,8 @@ var MessagesView = Backbone.View.extend({
 
 //View for message
 var MessageView = Backbone.View.extend({
-  $el: $('.messages'),
   render: function() {
-    $el.append
+
   }
 
 });
