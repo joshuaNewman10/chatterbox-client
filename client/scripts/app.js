@@ -8,17 +8,6 @@ var getUserName = function() {
 };
 
 
-/* Add friend function:
-
-var addFriend = function() {
-  var friend = $(this).val();
-  var friendList = user.friends;
-  if( friendList.indexOf( friend ) === -1) {
-    friendList.push(friend);
-  }
-};
-*/
-
 var getMessages = function(){$.ajax({
     // always use this url
     url: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt',
@@ -76,7 +65,7 @@ var updateMessages = function(messageList){
     if(currentMessage.roomname === currentRoom){
       var userName = $('<p class=chatName></p>').text(currentMessage.username + ": ");
       var mssg = $('<p class=chatMessage></p>').text(currentMessage.text);
-      $messageDiv.append(userName, mssg);
+      $messageDiv.append(userName, mssg,$("<hr>"));
       messages.push($messageDiv);
     }
   }
@@ -94,7 +83,6 @@ var validateInput = function(message){
 
 var postMessage = function(userName, message, roomname) {
   $.ajax({
-    // always use this url
     url: 'https://api.parse.com/1/classes/chatterbox',
     type: 'POST',
     data: JSON.stringify({username: userName, text: message, roomname: roomname}),
@@ -103,7 +91,6 @@ var postMessage = function(userName, message, roomname) {
       console.log(data);
     },
     error: function (data) {
-      // see: https://developer.mozilla.org/en-US/docs/Web/API/console.error
       console.error('chatterbox: Failed to get message');
     }
   });
@@ -138,5 +125,4 @@ $(document).ready(function() {
     }
   });
   $(".userName").text(user.name);
-  // $(".messages").on('click', '.chatName', addFriend);
 });

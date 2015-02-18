@@ -5,7 +5,7 @@
     <title>chatterbox</title>
     <script src="bower_components/underscore/underscore-min.js"></script>
     <script src="bower_components/jquery/jquery.min.js"></script>
-
+     <script src="bower_components/backbone/backbone.js"></script>
     <!-- Optional theme -->
     <link rel="stylesheet" href="scripts/bootstrap.min.css">
     <link rel="stylesheet" href="../client/styles/styles.css">
@@ -14,7 +14,7 @@
     <!-- dependencies -->
     <!-- your scripts -->
     <script src="env/config.js"></script>
-    <script src="scripts/app.js"></script>
+    <script src="scripts/appbackbone.js"></script>
   </head>
   <body>
 
@@ -62,5 +62,11 @@
         </div>
       </div>
     </div>
+    <script>
+    var chatMessages = new Messages();
+    chatMessages.loadMsgs();
+    var chatMessagesView = new MessagesView({model: chatMessages});
+
+    </script>
   </body>
 </html>
